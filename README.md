@@ -7,3 +7,4 @@
 * IP 51.250.103.185
 * Backend http://api.movies-explorer-em.nomoredomains.work/
 * Frontend http://movies-explorer-em.nomoredomains.work/
+* Макет в Figma https://www.figma.com/file/zxmZdfT0KvivRWfdYC6O87/Diploma-(Copy)?node-id=891%3A3857&mode=dev
