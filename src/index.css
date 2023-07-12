@@ -13,4 +13,7 @@
 @import url(./components/MoviesCardList/MoviesCardList.css);
 @import url(./components/MoviesCard/MoviesCard.css);
 @import url(./components/User/User.css);
+@import url(./components/Profile/Profile.css);
+@import url(./components/NotFoundPage/NotFoundPage.css);
+@import url(./components/Menu/Menu.css);
 

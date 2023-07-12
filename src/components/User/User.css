@@ -8,6 +8,10 @@
   justify-content: center;
 }
 
+.user__logo {
+  cursor: pointer;
+}
+
 .user__title {
   font-size: 24px;
   font-style: normal;
@@ -60,6 +64,12 @@
   font-weight: 500;
   line-height: normal;
   border: 0;
+  cursor: pointer;
+}
+
+.login-button {
+  margin-top: 198px;
+  cursor: pointer;
 }
 
 .user-form__link-text {
@@ -75,4 +85,24 @@
 .user-form__link {
   color: #FF6838;
   text-decoration: none;
+}
+
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .user {
+    max-width: 260px;
+    align-items: center;
+  }
+
+  .user-form__submit-button {
+    margin-top: 240px;
+  }
+
+  .login-button {
+    margin-top: 309px;
+  }
+
+  .user-form__link-text {
+    font-size: 12px;
+  }
 }

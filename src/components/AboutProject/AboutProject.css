@@ -38,3 +38,81 @@
 .about__timeline {
   margin-top: 110px;
 }
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .about {
+    min-height: 585px;
+  }
+
+  .about__article {
+    width: 319px;
+  }
+
+  .about__article:last-of-type {
+    margin-left: 30px;
+  }
+
+  .about__article-title {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.8px;
+  }
+
+  .about__article-content {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 22px 0 0 0;
+  }
+
+  .about__timeline {
+    margin-top: 93px;
+    width: 668px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .about {
+    min-height: 641px;
+  }
+
+  .about__articles {
+    flex-direction: column;
+    margin-top: 60px;
+  }
+
+  .about__article {
+    width: 284px;
+  }
+
+  .about__article:last-of-type {
+    margin: 56px 0 0 0;
+  }
+
+  .about__article-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.72px;
+  }
+
+  .about__article-content {
+    color: #000;
+    font-family: Inter;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+  }
+
+  .about__timeline {
+    margin-top: 60px;
+    width: 284px;
+  }
+}

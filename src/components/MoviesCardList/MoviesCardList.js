@@ -10,18 +10,18 @@ function MoviesCardList(props) {
   return(
     <section className="movies-cards">
       <ul className="movies-cards__list">
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
+        <MoviesCard page={props.page} />
       </ul>
       <MoreMoviesButton />
     </section>

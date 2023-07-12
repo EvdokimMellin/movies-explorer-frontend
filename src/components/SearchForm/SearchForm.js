@@ -19,6 +19,10 @@ function SearchForm() {
         <button className="search__switch-button" onClick={searchSwitch}></button>
         <p className="search__switch-text">Короткометражки</p>
       </div>
+      <div className='search__switch-container'>
+        <button className="search__switch-button small-screen" onClick={searchSwitch}></button>
+        <p className="search__switch-text small-screen">Короткометражки</p>
+      </div>
     </section>
   )
 }

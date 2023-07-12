@@ -11,11 +11,14 @@ import GlobalNav from '../GlobalNav/GlobalNav';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import User from '../User/User';
-import { api } from '../../utils/Api'
+import Profile from '../Profile/Profile';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 function App() {
-  const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState({});
+  const currentUser = {
+    name: 'Андрей', // Временная мера до связи с сервером
+    email: 'andrey@yandex.ru'
+  }
 
   function Main () {
     return (<>
@@ -30,7 +33,7 @@ function App() {
 
   function Movies() {
     return (<>
-      <GlobalNav />
+      <GlobalNav page="movies" />
       <SearchForm />
       <MoviesCardList page="movies" />
     </>);
@@ -38,50 +41,10 @@ function App() {
 
   function SavedMovies() {
     return (<>
-      <GlobalNav />
+      <GlobalNav page="saved-movies" />
       <SearchForm />
       <MoviesCardList page="saved-movies" />
     </>);
-  }
-
-  function checkResponse (res) {
-    if (res.ok){
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  }
-
-  function register (email, password, name) {
-    console.log(JSON.stringify({
-      "email": email,
-      "password": password,
-      "name": name
-    }));
-    return fetch(`http://api.movies-explorer-em.nomoredomains.work/signup`, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "email": email,
-        "password": password,
-        "name": name
-      }),
-      credentials : 'include',
-    })
-      .then((res) => (checkResponse(res)))
-  }
-
-  function handleRegister (email, password, name) {
-    register(email, password, name)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   return (
@@ -92,7 +55,10 @@ function App() {
           <Footer />
         </Route>
         <Route path="/signup">
-          <User handleSubmit={handleRegister} />
+          <User page='register' />
+        </Route>
+        <Route path="/signin">
+          <User page='login' />
         </Route>
         <Route path="/movies">
           <Movies />
@@ -101,6 +67,13 @@ function App() {
         <Route path="/saved-movies">
           <SavedMovies />
           <Footer />
+        </Route>
+        <Route path="/profile">
+          <GlobalNav />
+          <Profile user={currentUser} />
+        </Route>
+        <Route path="/*">
+          <NotFoundPage />
         </Route>
       </Switch>
     </div>

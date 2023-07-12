@@ -22,3 +22,52 @@
   height: 244px;
   width: 722px;
 }
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .promo {
+    height: 844px;
+  }
+
+  .promo__title {
+    text-align: center;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 52px;
+    margin: auto;
+    margin-top: 300px;
+    letter-spacing: -1.6px;
+  }
+
+  .promo__image {
+    margin: 140px auto 70px auto;
+    align-self: end;
+    height: 244px;
+    width: 722px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .promo {
+    height: 630px;
+  }
+
+  .promo__title {
+    font-size: 31px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 39px;
+    text-align: center;
+    margin: auto;
+    margin-top: 183px;
+    width: 300px;
+    letter-spacing: -1.24px;
+  }
+
+  .promo__image {
+    height: 230px;
+    width: 700px;
+    margin: 0 auto 40px auto;
+    overflow: hidden;
+  }
+}

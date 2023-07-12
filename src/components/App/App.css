@@ -21,3 +21,32 @@
   line-height: 27px;
   margin: 0 0 23px 0;
 }
+
+@media (min-width: 720px) and (max-width: 1279px) {
+  .section-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.88px;
+    width: 668px;
+  }
+}
+@media (min-width: 320px) and (max-width: 720px) {
+  .section-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.72px;
+    width: 284px;
+  }
+
+  .section-title__content {
+    margin: 0 0 28px 0;
+  }
+}

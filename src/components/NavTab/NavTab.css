@@ -26,6 +26,7 @@
   width: 76px;
   height: 32px;
   padding: 0;
+  cursor: pointer;
 }
 
 .nav__signup-button {
@@ -36,8 +37,52 @@
   width: 77px;
   height: 32px;
   padding: 0;
+  cursor: pointer;
 }
 
 .nav__logo {
   margin-left: 70px;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .nav__logo {
+    margin-left: 30px;
+  }
+
+  .nav__buttons {
+    margin-right: 30px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .nav__logo {
+    margin-left: 14px;
+  }
+
+  .nav__buttons {
+    margin-right: 14px;
+  }
+
+  .nav__buttons {
+    width: 132px;
+  }
+
+  .nav__signin-button {
+    width: 54px;
+    height: 26px;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .nav__signup-button {
+    width: 65px;
+    height: 26px;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+  }
 }
