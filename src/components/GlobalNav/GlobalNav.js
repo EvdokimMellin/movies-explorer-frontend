@@ -42,7 +42,7 @@ function GlobalNav(props) {
         <button className="global-nav__movies-button" onClick={handleMoviesClick}>Фильмы</button>
         <button className="global-nav__saved-movies-button" onClick={handleSavedMoviesClick}>Сохраненные фильмы</button>
       </div>
-      <button className='global-nav__account-button' onClick={handleProfileClick}>Акккаунт</button>
+      <button className='global-nav__account-button' onClick={handleProfileClick}>Аккаунт</button>
       <button className='global-nav__menu-button' onClick={menuOpenHandler}></button>
     </nav>
   )
