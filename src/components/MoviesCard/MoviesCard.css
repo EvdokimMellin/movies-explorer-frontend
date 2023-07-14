@@ -86,6 +86,10 @@
     height: 237px;
   }
 
+  .movies-card__delete-button {
+    opacity: 1;
+  }
+
   .movies-card__like-block {
     margin: 14px;
   }
