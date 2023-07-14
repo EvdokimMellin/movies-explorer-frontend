@@ -17,7 +17,8 @@
 }
 
 .footer__bottom-block {
-  width: 1140px;
+  min-width: 1140px;
+  width: 89%;
   border-top: 1px solid #e8e8e8;
   display: flex;
   justify-content: space-between;
@@ -52,7 +53,8 @@
   }
 
   .footer__bottom-block {
-    width: 708px;
+    min-width: 708px;
+    width: 92%;
   }
 }
 
@@ -64,10 +66,16 @@
     font-weight: 400;
     line-height: normal;
     text-align: center;
+    min-height: 253px;
+  }
+
+  .footer__project {
+    margin-top: 58px;
   }
 
   .footer__bottom-block {
-    width: 300px;
+    min-width: 300px;
+    width: 93%;
     display: grid;
     grid-template-areas:
       "links"

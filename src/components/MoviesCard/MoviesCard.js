@@ -11,7 +11,7 @@ function MoviesCard(props) {
 
   return(
     <li className="movies-card">
-      <img src={cardImage} alt="#" className="movies-card__image"/>
+      <img src={cardImage} alt="Превью фильма" className="movies-card__image"/>
       <div className="movies-card__like-block">
         <h2 className="movies-card__title">Название фильма</h2>
         {props.page === 'movies'

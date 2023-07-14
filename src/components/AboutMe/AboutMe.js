@@ -3,7 +3,7 @@ import studentPhoto from '../../images/student-photo.svg'
 function AboutMe() {
   return(
     <section className="student">
-      <div className='section-title'>
+      <div className='section-title section-title_place_student'>
         <h2 className='section-title__content'>Студент</h2>
       </div>
       <div className="student__content">

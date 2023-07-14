@@ -12,20 +12,9 @@
   display: block;
 }
 
-.menu__container {
-  max-width: 520px;
-  min-height: 160vh;
-  margin-left: auto;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-}
-
 .menu__nav {
   max-width: 520px;
-  min-height: 160vh;
+  min-height: 100vh;
   margin-left: auto;
   background-color: #fff;
   display: flex;
@@ -64,7 +53,9 @@
 }
 
 .menu__profile-button {
-  margin-top: 621px;
+  /* margin-top: 621px; */
+  margin-top: auto;
+  margin-bottom: 90px;
   border: 0;
   border-radius: 20px;
   background: #F9F9F9;
@@ -94,6 +85,7 @@
   }
 
   .menu__profile-button {
-    margin-top: 452px;
+    /* margin-top: 452px; */
+    margin-bottom: 46px;
   }
 }

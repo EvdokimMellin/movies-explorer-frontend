@@ -21,6 +21,7 @@
   font-size: 50px;
   line-height: 58px;
   margin: 0;
+  letter-spacing: -2px;
 }
 
 .student__article-subtitle {
@@ -52,6 +53,7 @@
 @media (min-width: 768px) and (max-width: 1279px) {
   .student {
     margin: 90px 0 90px 0;
+    min-height: 424px;
   }
 
   .student__article {
@@ -128,6 +130,8 @@
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
 
   .student__article-content {

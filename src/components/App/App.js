@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import NavTab from '../NavTab/NavTab';
 import Promo from '../Promo/Promo';
@@ -24,27 +24,30 @@ function App() {
     return (<>
       <NavTab />
       <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main>
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
+      <Footer />
     </>);
   }
 
   function Movies() {
-    return (<>
+    return (<main>
       <GlobalNav page="movies" />
       <SearchForm />
       <MoviesCardList page="movies" />
-    </>);
+    </main>);
   }
 
   function SavedMovies() {
-    return (<>
+    return (<main>
       <GlobalNav page="saved-movies" />
       <SearchForm />
       <MoviesCardList page="saved-movies" />
-    </>);
+    </main>);
   }
 
   return (
@@ -52,7 +55,6 @@ function App() {
       <Switch>
         <Route exact path="/">
           <Main />
-          <Footer />
         </Route>
         <Route path="/signup">
           <User page='register' />
