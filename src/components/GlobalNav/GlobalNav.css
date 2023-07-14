@@ -87,7 +87,8 @@
 
 @media (min-width: 320px) and (max-width: 767px) {
   .global-nav__menu-button {
-    margin: auto 14px auto auto;
+    margin: auto 23px auto auto;
+    width: 30px;
   }
 
   .global-nav__logo {

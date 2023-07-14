@@ -24,8 +24,8 @@ function Menu(props) {
             <button className='menu__close-button' onClick={handleCloseMenu}></button>
             <NavLink to='/' className='menu__link'>Главная</NavLink>
             <NavLink to='/movies' className={`menu__link ${props.page === 'movies' && 'menu__link_active'}`} onClick={handleChangePage}>Фильмы</NavLink>
-            <NavLink to='/saved-movies' className={`menu__link ${props.page === 'saved-movies' && 'menu__link_active'}`} onClick={handleChangePage}>Сохраненные фильмы</NavLink>
-            <button className='menu__profile-button' onClick={handleProfileClick}>Акккаунт</button>
+            <NavLink to='/saved-movies' className={`menu__link ${props.page === 'saved-movies' && 'menu__link_active'}`} onClick={handleChangePage}>Сохранённые фильмы</NavLink>
+            <button className='menu__profile-button' onClick={handleProfileClick}>Аккаунт</button>
           </nav>
         </div>
     )

@@ -51,6 +51,7 @@
   background: #FF6838;
   border-radius: 48px;
   margin-right: 19px;
+  cursor: pointer;
 }
 
 .small-screen {
@@ -120,7 +121,8 @@
 @media (min-width: 320px) and (max-width: 767px) {
   .search {
     width: 300px;
-    height: 182px;
+    height: 180px;
+    margin-top: 80px;
   }
 
   .search__icon {
@@ -134,6 +136,10 @@
 
   .search__textarea {
     width: 160px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
   }
 
   .search__button {
@@ -149,13 +155,18 @@
 
   .search__switch-text {
     display: none;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
   }
 
   .search__switch-container {
     display: flex;
-    margin-top: 33px;
+    margin: 33px auto 0 auto;
     align-items: center;
-    justify-content: center;
+    width: 148px;
+    justify-content: space-between;
   }
 
   .small-screen {

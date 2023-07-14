@@ -92,5 +92,24 @@
 
   .movies-card__title {
     line-height: normal;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .movies-card__duration {
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .movies-card__like-block {
+    margin-top: 11px;
+  }
+
+  .movies-card__like-button {
+    margin-right: 4px;
+    margin-top: 3px;
   }
 }
