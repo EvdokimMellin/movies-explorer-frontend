@@ -1,0 +1,74 @@
+.app {
+  font-family: 'Inter', 'Arial', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+.section-title {
+  margin: 0;
+  border-bottom: 1px solid black;
+  min-width: 1140px;
+  width: 89%;
+}
+
+.section-title_place_project {
+  height: 48px;
+}
+
+
+.section-title__content {
+  font-weight: 400;
+  font-size: 22px;
+  letter-spacing: -0.88px;
+  line-height: 27px;
+  margin: 0 0 23px 0;
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .section-title {
+    color: #000;
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.88px;
+    min-width: 668px;
+    width: 87%;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .section-title {
+    min-width: 284px;
+    width: 89%;
+  }
+
+  .section-title_place_student {
+    min-width: 292px;
+    width: 91%;
+  }
+
+  .section-title__content {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.72px;
+  }
+
+  .section-title__content {
+    margin: 0 0 28px 0;
+  }
+
+  .section-title_place_project {
+    height: 50px;
+  }
+}

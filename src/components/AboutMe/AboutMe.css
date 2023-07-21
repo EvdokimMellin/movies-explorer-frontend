@@ -1,0 +1,158 @@
+.student {
+  width: 100%;
+  min-height: 444px;
+  margin: 110px 0 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.student__content {
+  display: flex;
+  margin-top: 66px;
+}
+
+.student__article {
+  max-width: 600px;
+}
+
+.student__article-title {
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  margin: 0;
+  letter-spacing: -2px;
+}
+
+.student__article-subtitle {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  margin: 18px 0 26px 0;
+}
+
+.student__article-content {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0;
+}
+
+.student__article-github {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 99px 0 0 0;
+}
+
+.student__photo {
+  margin-left: 270px;
+}
+
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .student {
+    margin: 90px 0 90px 0;
+    min-height: 424px;
+  }
+
+  .student__article {
+    max-width: 364px;
+  }
+
+  .student__article-title {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: -1.6px;
+  }
+
+  .student__article-subtitle {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    margin: 16px 0 20px 0;
+  }
+
+  .student__article-content {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  .student__article-github {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 87px 0 0 0;
+  }
+
+  .student__photo {
+    margin-left: 49px;
+    width: 255px;
+    height: 307px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .student {
+    margin: 70px 0 70px 0;
+  }
+
+  .student__content {
+    display: grid;
+    margin-top: 60px;
+    row-gap: 40px;
+    grid-template-areas:
+      "photo"
+      "article";
+  }
+
+  .student__article {
+    max-width: 292px;
+    grid-area: article;
+  }
+
+  .student__article-title {
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -1.2px;
+  }
+
+  .student__article-subtitle {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .student__article-content {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+  }
+
+  .student__article-github {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 40px 0 0 0;
+  }
+
+  .student__photo {
+    margin-left: 0;
+    width: 292px;
+    height: 352px;
+    grid-area: photo;
+  }
+}
