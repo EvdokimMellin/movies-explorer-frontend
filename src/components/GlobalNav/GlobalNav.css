@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+.global-nav_page_main {
+  background-color: #465DFF;
+  color: #fff;
+}
+
 .global-nav__buttons {
   margin-left: 44px;
   display: flex;
@@ -25,6 +30,7 @@
   font-size: 13px;
   line-height: 18px;
   cursor: pointer;
+  color: inherit;
 }
 
 .global-nav__movies-button {
@@ -35,6 +41,7 @@
   line-height: 18px;
   padding: 0;
   cursor: pointer;
+  color: inherit;
 }
 
 .global-nav__logo {

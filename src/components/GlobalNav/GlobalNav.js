@@ -35,7 +35,7 @@ function GlobalNav(props) {
   }
 
   return(
-    <nav className="global-nav">
+    <nav className={`global-nav ${activePage === 'main' && 'global-nav_page_main'}`}>
       <Menu isOpen={menuStatus} page={activePage} handleCloseMenu={menuCloseHandler} handleChangePage={changePageHandler}/>
       <img className="global-nav__logo" alt="Логотип" src={logo} onClick={handleLogoClick} />
       <div className="global-nav__buttons">

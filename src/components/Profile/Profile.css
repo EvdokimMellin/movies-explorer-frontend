@@ -15,12 +15,23 @@
   margin-bottom: 0;
 }
 
+.profile__form {
+  display: flex;
+  flex-direction: column;
+}
+
 .profile__element {
   width: 410px;
   margin: 0 auto;
   margin-top: 17px;
   display: flex;
   justify-content: space-between;
+}
+
+.profile__input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .profile__element:first-of-type {
@@ -43,6 +54,14 @@
   font-weight: 400;
   line-height: normal;
   margin: 0;
+  border: 0;
+  text-align: right;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.profile__element-value:focus {
+  outline: none;
 }
 
 .profile__edit-button {
@@ -57,7 +76,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin: 220px auto 16px auto;
+  margin: 212px auto 16px auto;
 }
 
 .profile__logout-button {
