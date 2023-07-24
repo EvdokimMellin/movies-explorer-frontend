@@ -97,6 +97,11 @@
   cursor: pointer;
 }
 
+.user-form__submit-button_disabled {
+  opacity: 0.4;
+  cursor: auto;
+}
+
 .user-form__link-text {
   color: #A0A0A0;
   text-align: center;

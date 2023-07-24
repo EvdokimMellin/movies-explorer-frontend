@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile(props) {
@@ -10,55 +10,79 @@ function Profile(props) {
   const regName = /^[a-zа-яА-ЯЁё +-]+$/gi;
   const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
+  useEffect(() => {
+    if (props.conflictError) {
+      setEmailError('Пользователь с такой почтой уже существует');
+    } else {
+      setEmailError('');
+    }
+  }, [props.conflictError]);
+
+  useEffect(() => {
+    if(emailValue && emailValue !== currentUser.email && !regEmail.test(emailValue)) {
+      setEmailError('Некорректный адрес электронной почты');
+    } else {
+      emailError === 'Некорректный адрес электронной почты'
+        && setEmailError('');
+    }
+  }, [emailValue])
+
+  useEffect(() => {
+    if(nameValue  && nameValue !== currentUser.name && !regName.test(nameValue)) {
+      setNameError('Имя может содержать только латиницу, кириллицу, пробел или дефис.');
+    } else {
+      nameError === 'Имя может содержать только латиницу, кириллицу, пробел или дефис.'
+        && setNameError('');
+    }
+  }, [nameValue])
+
   function handleLogout() {
     props.logoutHandler();
   }
+
   function handleEdit(evt) {
     evt.preventDefault();
-    (!nameError && !emailError) && props.editProfileHandler(nameValue, emailValue)
+    !checkInvalidity() && props.editProfileHandler(nameValue, emailValue)
   }
+
   function handleInput(evt) {
+    props.setConflictError(false);
     switch(evt.target.name) {
       case 'name':
-        if(!regName.test(nameValue)) {
-          setNameError('Имя может содержать только латиницу, кириллицу, пробел или дефис.');
-          evt.target.classList.add('user-form__input-error')
-        } else {
-          setNameError('');
-          evt.target.classList.remove('user-form__input-error')
-        }
         if(evt.target.validationMessage) {
           setNameError(evt.target.validationMessage);
+        } else {
+          setNameError('');
         }
         setNameValue(evt.target.value);
         break;
       case 'email':
         setEmailValue(evt.target.value);
-        if(evt.target.validationMessage) {
-          setEmailError(evt.target.validationMessage);
-        } else {
-          setEmailError('');
-        }
-        if(!regEmail.test(emailValue)) {
-          setEmailError('Некорректный адрес электронной почты');
-          evt.target.classList.add('user-form__input-error')
-        } else {
-          setNameError('');
-          evt.target.classList.remove('user-form__input-error')
-        }
         break;
       default:
+    }
+  }
+
+  function checkInvalidity () {
+    if (nameError || emailError
+      || (!nameValue && (!emailValue || emailValue === currentUser.email))
+      || ((nameValue === currentUser.name) && (!emailValue || emailValue === currentUser.email))
+      || ((emailValue === currentUser.email) && (!nameValue || nameValue === currentUser.name))
+      || (!emailValue && (!nameValue || nameValue === currentUser.name))) {
+      return true;
+    } else {
+      return false;
     }
   }
 
   return(
     <main className='profile'>
       <h1 className='profile__title'>Привет, {currentUser.name}!</h1>
-      <form className='profile__form' onSubmit={handleEdit}>
+      <form className='profile__form' onSubmit={handleEdit} noValidate>
         <div className='profile__element'>
           <p className='profile__element-key'>Имя</p>
           <div className='profile__input-container'>
-            <input type='name' className='profile__element-value' name='name' onChange={handleInput} placeholder={currentUser.name}></input>
+            <input type='name' className='profile__element-value' name='name' onChange={handleInput} placeholder={currentUser.name} minLength='3' maxLength='20'></input>
             <div className='profile__error-container'>
               <span className='user-form__error-message'>{nameError}</span>
             </div>
@@ -73,7 +97,7 @@ function Profile(props) {
             </div>
           </div>
         </div>
-        <button className='profile__edit-button'>Редактировать</button>
+        <button className={`profile__edit-button ${checkInvalidity() && 'profile__edit-button_disabled'}`}>Редактировать</button>
       </form>
       <button className='profile__logout-button' onClick={handleLogout}>Выйти из аккаунта</button>
     </main>

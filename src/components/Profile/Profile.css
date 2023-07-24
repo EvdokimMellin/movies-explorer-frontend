@@ -79,6 +79,11 @@
   margin: 212px auto 16px auto;
 }
 
+.profile__edit-button_disabled {
+  cursor: auto;
+  opacity: 0.4;
+}
+
 .profile__logout-button {
   padding: 0;
   border: 0;

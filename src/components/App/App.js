@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import NavTab from '../NavTab/NavTab';
 import Promo from '../Promo/Promo';
 import AboutProject from '../AboutProject/AboutProject';
@@ -22,12 +22,11 @@ import { shortMoviesFilter } from '../../utils/shortMoviesFilter';
 
 
 function App() {
-  const history = useHistory();
   const [cards, setCards] = useState([]);
   const [savedCards, setSavedCards] = useState([]);
   const [conflictError, setConflictError] = useState(false);
+  const [unauthorizedError, setUnauthorizedError] = useState(false);
   const [loginState, setLoginState] = useState(false);
-  const [activePage, setActivePage] = useState('/');
   const [isTokenChecked, setIsTokenChecked] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]);
@@ -69,7 +68,7 @@ function App() {
       })
       .finally(() => {setIsTokenChecked(true)})
       .catch((err) => console.log(err));
-  }, [])
+  }, [loginState])
 
   useEffect(() => {
     mainApi.getUserInfo()
@@ -116,7 +115,7 @@ function App() {
   function ProfilePage() {
     return (<>
       <GlobalNav />
-      <Profile setLoginState={setLoginState} logoutHandler={handleLogout} editProfileHandler={handleEditProfile} />
+      <Profile setLoginState={setLoginState} logoutHandler={handleLogout} editProfileHandler={handleEditProfile} setConflictError={setConflictError} conflictError={conflictError} />
     </>);
   }
 
@@ -154,8 +153,14 @@ function App() {
       .then(res => {
         console.log(res);
         setLoginState(true);
+        setUnauthorizedError(false);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        if (err === 'Ошибка: 401') {
+          setUnauthorizedError(true);
+        }
+        console.log(err);
+      });
   }
 
   function handleLogout() {
@@ -172,8 +177,14 @@ function App() {
       .then(res => {
         console.log(res);
         setCurrentUser(res);
+        setConflictError(false);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err)
+        if (err === 'Ошибка: 409') {
+          setConflictError(true);
+        }
+      });
   }
 
   function handleSaveMovie(movie) {
@@ -211,11 +222,11 @@ function App() {
           <ProtectedRoute path="/saved-movies" loginState={loginState} component={SavedMovies} />
           <ProtectedRoute path="/profile" loginState={loginState} component={ProfilePage} />
           <Route path="/signup">
-            <User page='register' submitHandler={handleRegister} conflictError={conflictError} />
+            <User page='register' submitHandler={handleRegister} setConflictError={setConflictError} conflictError={conflictError} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} />
             {loginState && <Redirect to="/" />}
           </Route>
           <Route path="/signin">
-            <User page='login' submitHandler={handleLogin} />
+            <User page='login' submitHandler={handleLogin} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} setConflictError={setConflictError} conflictError={conflictError} />
             {loginState && <Redirect to="/" />}
           </Route>
           <Route path="/*">
