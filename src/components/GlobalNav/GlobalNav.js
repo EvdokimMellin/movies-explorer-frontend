@@ -1,6 +1,6 @@
 import logo from '../../images/logo.svg';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import Menu from '../Menu/Menu';
 
 function GlobalNav(props) {
@@ -39,11 +39,11 @@ function GlobalNav(props) {
       <Menu isOpen={menuStatus} page={activePage} handleCloseMenu={menuCloseHandler} handleChangePage={changePageHandler}/>
       <img className="global-nav__logo" alt="Логотип" src={logo} onClick={handleLogoClick} />
       <div className="global-nav__buttons">
-        <button className="global-nav__movies-button" onClick={handleMoviesClick}>Фильмы</button>
-        <button className="global-nav__saved-movies-button" onClick={handleSavedMoviesClick}>Сохраненные фильмы</button>
+        <NavLink to='/movies' className="global-nav__link" onClick={handleMoviesClick}>Фильмы</NavLink>
+        <NavLink to='/saved-movies' className="global-nav__link" onClick={handleSavedMoviesClick}>Сохраненные фильмы</NavLink>
       </div>
       <button className='global-nav__account-button' onClick={handleProfileClick}>Аккаунт</button>
-      <button className='global-nav__menu-button' onClick={menuOpenHandler}></button>
+      <button className={`global-nav__menu-button ${activePage === 'main' && 'global-nav__menu-button_main'}`} onClick={menuOpenHandler}></button>
     </nav>
   )
 }

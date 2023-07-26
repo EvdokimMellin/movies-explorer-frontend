@@ -1,14 +1,18 @@
 .preloader {
+  display: none;
+}
+
+.preloader_state_is-loading {
+  display: block;
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(256, 256, 256, 0.8);
   right: 0;
   left: 0;
-  display: none;
 }
 
-.preloader_active {
+.preloader_state_not-found {
   display: block;
 }
 

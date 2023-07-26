@@ -33,7 +33,6 @@ function User(props) {
   }, [props.conflictError]);
 
   useEffect(() => {
-    console.log(props.unauthorizedError);
     if (props.unauthorizedError) {
       setPasswordError('Неверный E-mail или пароль');
     } else {
@@ -125,7 +124,7 @@ function User(props) {
         {props.page === 'register' &&
           <>
             <label htmlFor='user-form__input-name' className='user-form__label'>Имя</label>
-            <input type='name' id='user-form__input-name' name='name' className={`user-form__input ${nameError && 'user-form__input-error'}`} required onChange={handleInput} minLength='3' maxLength='20'></input>
+            <input type='name' id='user-form__input-name' name='name' className={`user-form__input ${nameError && 'user-form__input-error'}`} required onChange={handleInput} minLength='2' maxLength='30'></input>
             <div className='user-form__error-container'>
               <span className='user-form__error-message'>{nameError}</span>
             </div>

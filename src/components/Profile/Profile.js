@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile(props) {
@@ -7,8 +7,15 @@ function Profile(props) {
   const [nameError, setNameError] = useState('');
   const [emailValue, setEmailValue] = useState(currentUser.email);
   const [emailError, setEmailError] = useState('');
+  const nameInput = useRef();
+  const emailInput = useRef();
   const regName = /^[a-zа-яА-ЯЁё +-]+$/gi;
   const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+  useEffect(() => {
+    nameInput.current.setAttribute('value', currentUser.name)
+    emailInput.current.setAttribute('value', currentUser.email)
+  }, [currentUser])
 
   useEffect(() => {
     if (props.conflictError) {
@@ -75,32 +82,51 @@ function Profile(props) {
     }
   }
 
+  function closePopup(evt) {
+    (evt.target.classList.contains('success-popup') || evt.target.classList.contains('success-popup__button'))
+      && props.setIsPopupOpened(false)
+  }
+
+  function SuccessPopup() {
+    return(
+      <div className={`success-popup ${props.isPopupOpened && 'success-popup_opened'}`} onClick={closePopup}>
+        <div className='success-popup__container'>
+          <p className='success-popup__message'>Профиль изменён</p>
+          <button className='success-popup__button' onClick={closePopup}>Ок</button>
+        </div>
+      </div>
+    )
+  }
+
   return(
-    <main className='profile'>
-      <h1 className='profile__title'>Привет, {currentUser.name}!</h1>
-      <form className='profile__form' onSubmit={handleEdit} noValidate>
-        <div className='profile__element'>
-          <p className='profile__element-key'>Имя</p>
-          <div className='profile__input-container'>
-            <input type='name' className='profile__element-value' name='name' onChange={handleInput} placeholder={currentUser.name} minLength='3' maxLength='20'></input>
-            <div className='profile__error-container'>
-              <span className='user-form__error-message'>{nameError}</span>
+    <>
+      <SuccessPopup />
+      <main className='profile'>
+        <h1 className='profile__title'>Привет, {currentUser.name}!</h1>
+        <form className='profile__form' onSubmit={handleEdit} noValidate>
+          <div className='profile__element'>
+            <p className='profile__element-key'>Имя</p>
+            <div className='profile__input-container'>
+              <input type='name' className='profile__element-value' name='name' onChange={handleInput} minLength='2' maxLength='30' ref={nameInput}></input>
+              <div className='profile__error-container'>
+                <span className='user-form__error-message'>{nameError}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='profile__element'>
-          <p className='profile__element-key'>E-mail</p>
-          <div className='profile__input-container'>
-            <input type='email' className='profile__element-value' name='email' onChange={handleInput} placeholder={currentUser.email}></input>
-            <div className='profile__error-container'>
-              <span className='user-form__error-message'>{emailError}</span>
+          <div className='profile__element'>
+            <p className='profile__element-key'>E-mail</p>
+            <div className='profile__input-container'>
+              <input type='email' className='profile__element-value' name='email' ref={emailInput} onChange={handleInput}></input>
+              <div className='profile__error-container'>
+                <span className='user-form__error-message'>{emailError}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <button className={`profile__edit-button ${checkInvalidity() && 'profile__edit-button_disabled'}`}>Редактировать</button>
-      </form>
-      <button className='profile__logout-button' onClick={handleLogout}>Выйти из аккаунта</button>
-    </main>
+          <button className={`profile__edit-button ${checkInvalidity() && 'profile__edit-button_disabled'}`}>Редактировать</button>
+        </form>
+        <button className='profile__logout-button' onClick={handleLogout}>Выйти из аккаунта</button>
+      </main>
+    </>
   )
 }
 
