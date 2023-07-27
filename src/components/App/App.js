@@ -33,8 +33,10 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
+  const [onlyShortSavedMovies, setOnlyShortSavedMovies] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useState('');
+  const [savedSearchData, setSavedSearchData] = useState('');
   const [notFound, setNotFound] = useState(false);
   const [notFoundSaved, setNotFoundSaved] = useState(false);
   const [isPopupOpened, setIsPopupOpened] = useState(false);
@@ -42,16 +44,26 @@ function App() {
   useEffect(() => {
     if (onlyShortMovies) {
       setCards(shortMoviesFilter(movieFilter(movies, searchData)));
-      setSavedCards(shortMoviesFilter(movieFilter(savedMovies, searchData)));
+      // setSavedCards(shortMoviesFilter(movieFilter(savedMovies, searchData)));
       shortMoviesFilter(movieFilter(movies, searchData)).length !== 0 ? setNotFound(false) : setNotFound(true);
-      shortMoviesFilter(movieFilter(savedMovies, searchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+      // shortMoviesFilter(movieFilter(savedMovies, searchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
     } else {
       setCards(movieFilter(movies, searchData));
-      setSavedCards(movieFilter(savedMovies, searchData));
+      // setSavedCards(movieFilter(savedMovies, searchData));
       movieFilter(movies, searchData).length !== 0 ? setNotFound(false) : setNotFound(true);
-      movieFilter(savedMovies, searchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+      // movieFilter(savedMovies, searchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
     }
-  }, [searchData, onlyShortMovies, savedMovies, movies])
+  }, [searchData, onlyShortMovies, movies]);
+
+  // useEffect(() => {
+  //   if (onlyShortSavedMovies) {
+  //     setSavedCards(shortMoviesFilter(movieFilter(savedMovies, savedSearchData)));
+  //     shortMoviesFilter(movieFilter(savedMovies, savedSearchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+  //   } else {
+  //     setSavedCards(movieFilter(savedMovies, savedSearchData));
+  //     movieFilter(savedMovies, savedSearchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+  //   }
+  // }, [savedSearchData, onlyShortSavedMovies, savedMovies])
 
   useEffect (() => {
     mainApi.getSavedMovies()
@@ -64,6 +76,8 @@ function App() {
   }, [loginState])
 
   useEffect(() => {
+    // На странице movies строка поиска и состояние переключателя сохраняются при обновлении страницы,
+    // а на saved-movies - нет, чтобы пользователь при каждом заходе на страницу видел все фильмы, что он сохранил
     localStorage.getItem('keyWord') && handleSearch(localStorage.getItem('keyWord'));
     localStorage.getItem('onlyShortMovies') === 'true' && setOnlyShortMovies(true);
   }, [])
@@ -94,8 +108,11 @@ function App() {
   function Movies() {
     return (<main>
       <GlobalNav page="movies" />
-      <SearchForm searchHandler={handleSearch} checkboxClickHandler={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} />
-      <MoviesCardList page="movies" cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} moviesList={savedMovies} isLoading={isLoading} notFound={notFound} movies={movies} />
+      <SearchForm searchHandler={handleSearch} checkboxClickHandler={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} page='movies' />
+      <MoviesCardList page="movies" cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
+       moviesList={movies}
+      //  moviesList={savedMovies}
+       isLoading={isLoading} notFound={notFound} movies={movies} />
       <Footer />
     </main>);
   }
@@ -103,8 +120,11 @@ function App() {
   function SavedMovies() {
     return (<main>
       <GlobalNav page="saved-movies" />
-      <SearchForm searchHandler={handleSearch} checkboxClickHandler={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} />
-      <MoviesCardList page="saved-movies" cards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} moviesList={savedMovies} isLoading={isLoading} notFound={notFoundSaved} />
+      <SearchForm searchHandler={handleSearchSaved} checkboxClickHandler={setOnlyShortSavedMovies} searchData={savedSearchData} onlyShortMovies={onlyShortSavedMovies} page='saved-movies' />
+      <MoviesCardList page="saved-movies" cards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
+      moviesList={movies}
+      // moviesList={savedMovies}
+      isLoading={isLoading} notFound={notFoundSaved} />
       <Footer />
     </main>);
   }
@@ -125,12 +145,12 @@ function App() {
       moviesApi.getMovies()
         .then((res) => {
           res.forEach(movie => {
-            savedMovies.forEach(sMovie => {
-              if (sMovie.movieId === movie.id) {
-                movie.isSaved = true;
-                movie.savedId = sMovie._id;
-              }
-            })
+            // savedMovies.forEach(sMovie => {
+            //   if (sMovie.movieId === movie.id) {
+            //     movie.isSaved = true;
+            //     movie.savedId = sMovie._id;
+            //   }
+            // })
           });
           setMovies(res);
         })
@@ -140,6 +160,10 @@ function App() {
           setIsLoading(false);
         });
     }
+  }
+
+  function handleSearchSaved(inputValue) {
+    setSavedSearchData(inputValue);
   }
 
   function handleRegister({email, password, name}) {
@@ -203,26 +227,24 @@ function App() {
       });
   }
 
-  function handleSaveMovie(movie, buttonElement) {
+  function handleSaveMovie(movie) {
     mainApi.saveMovie(movie)
       .then(res => {
         setSavedMovies([res, ...savedMovies]);
         console.log(res);
-        buttonElement.classList.add('movies-card__like-button_active');
       })
       .catch(err => console.log(err));
   }
 
-  function handleDeleteMovie(movieId, buttonElement) {
-    mainApi.deleteMovie(movieId)
-      .then(res => {
-        setSavedMovies(savedMovies.filter((savedMovie) => {
-          return(savedMovie._id !== movieId);
-        }))
-        buttonElement && buttonElement.classList.remove('movies-card__like-button_active');
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+  function handleDeleteMovie(movieId) {
+    // mainApi.deleteMovie(movieId)
+    //   .then(res => {
+    //     setSavedMovies(savedMovies.filter((savedMovie) => {
+    //       return(savedMovie._id !== movieId);
+    //     }))
+    //     console.log(res);
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   if(!isTokenChecked) {

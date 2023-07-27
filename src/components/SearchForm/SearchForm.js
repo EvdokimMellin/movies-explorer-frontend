@@ -3,14 +3,15 @@ import searchIconGrey from '../../images/search-icon-grey.svg';
 import searchIconWhite from '../../images/search-icon-white.svg';
 
 function SearchForm(props) {
-  const [inputValue, setInputValue] = useState(localStorage.getItem('keyWord') !== 'null' ? localStorage.getItem('keyWord') : '');
+  const [inputValue, setInputValue] = useState(((localStorage.getItem('keyWord') !== 'null') && props.page !== 'saved-movies') ? localStorage.getItem('keyWord') : '');
   const [inputError, setInputError] = useState(false);
   const isChecked = props.onlyShortMovies;
   const searchInput = useRef();
 
   useEffect(() => {
-    localStorage.getItem('keyWord') && searchInput.current.setAttribute('value', inputValue);
-  }, [])
+    searchInput.current.setAttribute('value', props.searchData);
+    // props.page !== 'saved-movies' ? console.log(props.searchData) : console.log('object');
+  }, [props.searchData])
 
   function searchSwitch(e) {
     props.checkboxClickHandler(!props.onlyShortMovies);
