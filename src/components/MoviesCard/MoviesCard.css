@@ -6,6 +6,10 @@
   border-radius: 6px;
 }
 
+.movies-card_deleted {
+  display: none;
+}
+
 .movies-card__like-block {
   margin: 12px 16px 16px 16px;
   display: flex;

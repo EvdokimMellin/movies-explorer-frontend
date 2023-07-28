@@ -40,6 +40,8 @@ function App() {
   const [notFound, setNotFound] = useState(false);
   const [notFoundSaved, setNotFoundSaved] = useState(false);
   const [isPopupOpened, setIsPopupOpened] = useState(false);
+  let addedMovies = [];
+  let moviesForDelete = [];
 
   useEffect(() => {
     if (onlyShortMovies) {
@@ -55,21 +57,32 @@ function App() {
     }
   }, [searchData, onlyShortMovies, movies]);
 
-  // useEffect(() => {
-  //   if (onlyShortSavedMovies) {
-  //     setSavedCards(shortMoviesFilter(movieFilter(savedMovies, savedSearchData)));
-  //     shortMoviesFilter(movieFilter(savedMovies, savedSearchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
-  //   } else {
-  //     setSavedCards(movieFilter(savedMovies, savedSearchData));
-  //     movieFilter(savedMovies, savedSearchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
-  //   }
-  // }, [savedSearchData, onlyShortSavedMovies, savedMovies])
+  useEffect(() => {
+    const filteredMovies = savedMovies.concat(addedMovies)
+      .filter((movie) => {
+        return !moviesForDelete.find((delId) => {
+          return movie._id === delId;
+        })
+      })
+
+    if (onlyShortSavedMovies) {
+      setSavedCards(shortMoviesFilter(movieFilter(filteredMovies, savedSearchData)));
+      shortMoviesFilter(movieFilter(filteredMovies, savedSearchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+    } else {
+      setSavedCards(movieFilter(filteredMovies, savedSearchData));
+      movieFilter(filteredMovies, savedSearchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+    }
+  }, [savedSearchData, onlyShortSavedMovies, savedMovies])
 
   useEffect (() => {
     mainApi.getSavedMovies()
       .then((sMovies) => {
         setSavedMovies(sMovies);
         setLoginState(true);
+      })
+      .then(() => {
+        localStorage.getItem('keyWord') && handleSearch(localStorage.getItem('keyWord'));
+        localStorage.getItem('onlyShortMovies') === 'true' && setOnlyShortMovies(true);
       })
       .finally(() => {setIsTokenChecked(true)})
       .catch((err) => console.log(err));
@@ -78,8 +91,6 @@ function App() {
   useEffect(() => {
     // На странице movies строка поиска и состояние переключателя сохраняются при обновлении страницы,
     // а на saved-movies - нет, чтобы пользователь при каждом заходе на страницу видел все фильмы, что он сохранил
-    localStorage.getItem('keyWord') && handleSearch(localStorage.getItem('keyWord'));
-    localStorage.getItem('onlyShortMovies') === 'true' && setOnlyShortMovies(true);
   }, [])
 
   useEffect(() => {
@@ -110,9 +121,9 @@ function App() {
       <GlobalNav page="movies" />
       <SearchForm searchHandler={handleSearch} checkboxClickHandler={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} page='movies' />
       <MoviesCardList page="movies" cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
-       moviesList={movies}
-      //  moviesList={savedMovies}
-       isLoading={isLoading} notFound={notFound} movies={movies} />
+      //  moviesList={movies}
+       moviesList={savedMovies}
+       isLoading={isLoading} notFound={notFound} movies={movies} addedMovies={addedMovies} moviesForDelete={moviesForDelete} />
       <Footer />
     </main>);
   }
@@ -122,9 +133,9 @@ function App() {
       <GlobalNav page="saved-movies" />
       <SearchForm searchHandler={handleSearchSaved} checkboxClickHandler={setOnlyShortSavedMovies} searchData={savedSearchData} onlyShortMovies={onlyShortSavedMovies} page='saved-movies' />
       <MoviesCardList page="saved-movies" cards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
-      moviesList={movies}
-      // moviesList={savedMovies}
-      isLoading={isLoading} notFound={notFoundSaved} />
+      // moviesList={movies}
+      moviesList={savedMovies}
+      isLoading={isLoading} notFound={notFoundSaved} addedMovies={addedMovies} moviesForDelete={moviesForDelete} />
       <Footer />
     </main>);
   }
@@ -139,18 +150,27 @@ function App() {
   function handleSearch(inputValue) {
     setSearchData(inputValue);
     localStorage.setItem('keyWord', inputValue);
+    // setSavedMovies([...savedMovies, addedMovies]);
+    console.log(savedMovies.concat(addedMovies));
 
     if(movies.length === 0) {
       setIsLoading(true)
       moviesApi.getMovies()
         .then((res) => {
+          setMovies(res.map((movie) => {
+            let actingMovie = movie;
+            if(savedMovies.find(sMovie => {
+              return sMovie.movieId === actingMovie.id
+            })) {
+              actingMovie.isSaved = true;
+              actingMovie.savedId = savedMovies.find(sMovie => {
+                return sMovie.movieId === actingMovie.id
+              })._id;
+            }
+            return actingMovie;
+          }))
           res.forEach(movie => {
-            // savedMovies.forEach(sMovie => {
-            //   if (sMovie.movieId === movie.id) {
-            //     movie.isSaved = true;
-            //     movie.savedId = sMovie._id;
-            //   }
-            // })
+
           });
           setMovies(res);
         })
@@ -159,6 +179,35 @@ function App() {
           console.log(err);
           setIsLoading(false);
         });
+    } else {
+      // addedMovies = addedMovies.filter((movie) => {
+      //   return moviesForDelete.find((delId) => {
+      //     return movie._id === delId;
+      //   })
+      // })
+      console.log(moviesForDelete);
+      console.log(addedMovies);
+
+      addedMovies = addedMovies.filter((movie) => {
+        return !moviesForDelete.find((delId) => {
+          return movie._id === delId;
+        })
+      })
+
+      setSavedMovies(savedMovies.concat(addedMovies))
+      // setMovies(movies.map((movie) => {
+      //   let actingMovie = movie;
+      //   if(savedMovies.concat(addedMovies).find(sMovie => {
+      //     return sMovie.movieId === actingMovie.id
+      //   })) {
+      //     actingMovie.isSaved = true;
+      //     actingMovie.savedId = savedMovies.concat(addedMovies).find(sMovie => {
+      //       return sMovie.movieId === actingMovie.id
+      //     })._id;
+      //   }
+      //   console.log(actingMovie);
+      //   return actingMovie;
+      // }))
     }
   }
 
@@ -227,24 +276,40 @@ function App() {
       });
   }
 
-  function handleSaveMovie(movie) {
+  let savedIdes = []
+
+  function handleSaveMovie(movie, setIsLiked, setSavedId) {
     mainApi.saveMovie(movie)
       .then(res => {
-        setSavedMovies([res, ...savedMovies]);
+        console.log(moviesForDelete);
+        console.log(addedMovies);
+        addedMovies = [res, ...addedMovies]
+        setIsLiked(true);
         console.log(res);
+        setSavedId(res._id);
+        console.log(res._id);
+        savedIdes = [res._id, ...savedIdes]
+        // setSavedMovies([res, ...savedMovies]);
       })
       .catch(err => console.log(err));
   }
 
-  function handleDeleteMovie(movieId) {
-    // mainApi.deleteMovie(movieId)
-    //   .then(res => {
-    //     setSavedMovies(savedMovies.filter((savedMovie) => {
-    //       return(savedMovie._id !== movieId);
-    //     }))
-    //     console.log(res);
-    //   })
-    //   .catch(err => console.log(err));
+  function handleDeleteMovie(movieId, secondArg) {
+    mainApi.deleteMovie(movieId)
+      .then(res => {
+        secondArg.current ? secondArg.current.classList.add('movies-card_deleted') : secondArg(false);
+        moviesForDelete = [movieId, ...moviesForDelete]
+        addedMovies = addedMovies.filter((movie) => {
+          return moviesForDelete.find((delId) => {
+            return movie._id === delId;
+          })
+        })
+        console.log(res);
+        // setSavedMovies(savedMovies.filter((savedMovie) => {
+        //   return(savedMovie._id !== movieId);
+        // }))
+      })
+      .catch(err => console.log(err));
   }
 
   if(!isTokenChecked) {
