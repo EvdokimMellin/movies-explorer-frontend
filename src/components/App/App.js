@@ -195,11 +195,13 @@ function App() {
   }
 
   function handleSaveMovie(movie) {
+    setOnRequest(true);
     mainApi.saveMovie(movie)
       .then(res => {
         setSavedMovies([res, ...savedMovies]);
         console.log(res);
       })
+      .finally(() => {setOnRequest(false)})
       .catch((err) => {
         setServerError(err);
         console.log(err);
@@ -207,6 +209,7 @@ function App() {
   }
 
   function handleDeleteMovie(movieId) {
+    setOnRequest(true);
     mainApi.deleteMovie(movieId)
       .then(res => {
         setSavedMovies(savedMovies.filter((savedMovie) => {
@@ -214,6 +217,7 @@ function App() {
         }))
         console.log(res);
       })
+      .finally(() => {setOnRequest(false)})
       .catch((err) => {
         setServerError(err);
         console.log(err);
@@ -235,9 +239,9 @@ function App() {
             <Main loginState={loginState} />
           </Route>
 
-          <ProtectedRoute path="/movies" loginState={loginState} component={Movies} handleSearch={handleSearch} setOnlyShortMovies={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFound={notFound} movies={movies} />
+          <ProtectedRoute path="/movies" loginState={loginState} component={Movies} handleSearch={handleSearch} setOnlyShortMovies={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFound={notFound} movies={movies} onRequest={onRequest} />
 
-          <ProtectedRoute path="/saved-movies" loginState={loginState} component={SavedMovies} handleSearchSaved={handleSearchSaved} setOnlyShortSavedMovies={setOnlyShortSavedMovies} savedSearchData={savedSearchData} onlyShortSavedMovies={onlyShortSavedMovies} savedCards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFoundSaved={notFoundSaved} movies={movies}/>
+          <ProtectedRoute path="/saved-movies" loginState={loginState} component={SavedMovies} handleSearchSaved={handleSearchSaved} setOnlyShortSavedMovies={setOnlyShortSavedMovies} savedSearchData={savedSearchData} onlyShortSavedMovies={onlyShortSavedMovies} savedCards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFoundSaved={notFoundSaved} movies={movies} onRequest={onRequest} />
 
           <ProtectedRoute path="/profile" loginState={loginState} component={ProfilePage} setLoginState={setLoginState} handleLogout={handleLogout} handleEditProfile={handleEditProfile} setConflictError={setConflictError} conflictError={conflictError} isPopupOpened={isPopupOpened} setIsPopupOpened={setIsPopupOpened} onRequest={onRequest} />
 

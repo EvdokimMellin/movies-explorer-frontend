@@ -4,20 +4,24 @@ function MoviesCard(props) {
   const isLiked = props.moviesList.some(movie => movie.movieId === props.movieData.id);
 
   function handleLike() {
-    if(isLiked) {
-      let id
-      props.movieData.savedId
-        ? id = props.movieData.savedId
-        : id = props.moviesList.find(movie => movie.movieId === props.movieData.id)._id;
-      props.deleteHandler(id)
-    } else {
-      console.log(props.movieData);
-      props.likeHandler(props.movieData);
+    if(!props.onRequest) {
+      if(isLiked) {
+        let id
+        console.log(props.movieData.savedId);
+        console.log(props.moviesList.find(movie => movie.movieId === props.movieData.id)._id);
+        props.moviesList.find(movie => movie.movieId === props.movieData.id)._id
+          ? id = props.moviesList.find(movie => movie.movieId === props.movieData.id)._id
+          : id = props.movieData.savedId;
+        props.deleteHandler(id)
+      } else {
+        console.log(props.movieData);
+        props.likeHandler(props.movieData);
+      }
     }
   }
 
   function handleDelete() {
-    props.deleteHandler(props.movieData._id);
+    !props.onRequest && props.deleteHandler(props.movieData._id);
   }
 
   return(
