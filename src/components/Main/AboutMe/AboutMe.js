@@ -1,4 +1,4 @@
-import studentPhoto from '../../images/student-photo.svg'
+import studentPhoto from '../../../images/student-photo.svg'
 
 function AboutMe() {
   return(

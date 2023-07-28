@@ -1,4 +1,4 @@
-import logo from '../../images/logo.svg';
+import logo from '../../../images/logo.svg';
 import { useHistory } from 'react-router-dom';
 
 function NavTab() {

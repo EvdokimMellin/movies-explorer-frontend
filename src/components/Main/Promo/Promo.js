@@ -1,6 +1,6 @@
-import promoImageDesktop from '../../images/promo-image-desktop.svg';
-import promoImageTable from '../../images/promo-image-table.svg';
-import promoImagePhone from '../../images/promo-image-phone.svg'
+import promoImageDesktop from '../../../images/promo-image-desktop.svg';
+import promoImageTable from '../../../images/promo-image-table.svg';
+import promoImagePhone from '../../../images/promo-image-phone.svg'
 
 function Promo() {
   return(

@@ -28,6 +28,21 @@
   border-right: solid 1px #cbcbcb;
 }
 
+.search__error {
+  margin-left: 60px;
+  color: #EE3465;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: none;
+}
+
+.search__error_active {
+  display: block;
+}
+
 .search__textarea {
   border: 0;
   font-weight: 400;
@@ -171,5 +186,9 @@
 
   .small-screen {
     display: block;
+  }
+
+  .search__error {
+    margin-left: 50px;
   }
 }

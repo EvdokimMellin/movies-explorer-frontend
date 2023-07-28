@@ -1,0 +1,65 @@
+.error-popup {
+  z-index: 1;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-popup_opened {
+  display: flex;
+}
+
+.error-popup__container {
+  background-color: #fff;
+  width: 450px;
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.error-popup__message {
+  width: 80%;
+  color: #000;
+  text-align: center;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+.error-popup__button {
+  padding: 0;
+  cursor: pointer;
+  width: 150px;
+  height: 45px;
+  border: 0;
+  background-color: #000;
+  color: #fff;
+  border-radius: 6px;
+  margin-top: 50px;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  .error-popup__container {
+    width: 300px;
+    height: 300px;
+  }
+
+  .error-popup__message {
+    font-size: 16px;
+  }
+
+  .error-popup__button {
+    margin-top: 50px;
+  }
+}
