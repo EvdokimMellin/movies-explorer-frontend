@@ -10,9 +10,8 @@ function SearchForm(props) {
 
   useEffect(() => {
     searchInput.current.setAttribute('value', props.searchData);
-    // props.page === 'saved-movies' ? console.log(props.searchData) : console.log('object');
+    // props.page !== 'saved-movies' ? console.log(props.searchData) : console.log('object');
   }, [props.searchData])
-
 
   function searchSwitch(e) {
     props.checkboxClickHandler(!props.onlyShortMovies);
