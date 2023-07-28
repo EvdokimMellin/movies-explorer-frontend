@@ -28,12 +28,6 @@ function MoviesCardList(props) {
     }
   }
 
-  function MoreMoviesButton() {
-    return ((props.page === 'movies') && (props.cards.length > cardsLock))
-      ? <button className="movies-cards__more-movies-button" onClick={handleMoreMovies}>Ещё</button>
-      : <></>
-  }
-
   return(
     <section className="movies-cards">
       <Preloader isLoading={props.isLoading} notFound={props.notFound} movies={props.movies} />
@@ -44,7 +38,11 @@ function MoviesCardList(props) {
           })
         }
       </ul>
-      <MoreMoviesButton />
+      {
+        (props.cards.length > cardsLock)
+          ? <button className="movies-cards__more-movies-button" onClick={handleMoreMovies}>Ещё</button>
+          : <></>
+      }
     </section>
   )
 }

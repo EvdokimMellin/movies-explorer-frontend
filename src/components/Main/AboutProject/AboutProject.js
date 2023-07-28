@@ -1,6 +1,6 @@
-import projectTimeline from '../../images/project-timeline.svg';
-import projectTimelineTablet from '../../images/project-timeline-tablet.svg';
-import projectTimelinePhone from '../../images/project-timeline-phone.svg';
+import projectTimeline from '../../../images/project-timeline.svg';
+import projectTimelineTablet from '../../../images/project-timeline-tablet.svg';
+import projectTimelinePhone from '../../../images/project-timeline-phone.svg';
 
 function AboutProject() {
   return(

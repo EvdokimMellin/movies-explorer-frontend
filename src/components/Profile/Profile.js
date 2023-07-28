@@ -18,6 +18,16 @@ function Profile(props) {
   }, [currentUser])
 
   useEffect(() => {
+    if(props.onRequest) {
+      nameInput.current.setAttribute('readonly', 'readonly');
+      emailInput.current.setAttribute('readonly', 'readonly');
+    } else {
+      nameInput.current.removeAttribute('readonly');
+      emailInput.current.removeAttribute('readonly');
+    }
+  }, [props.onRequest])
+
+  useEffect(() => {
     if (props.conflictError) {
       setEmailError('Пользователь с такой почтой уже существует');
     } else {
@@ -122,7 +132,7 @@ function Profile(props) {
               </div>
             </div>
           </div>
-          <button className={`profile__edit-button ${checkInvalidity() && 'profile__edit-button_disabled'}`}>Редактировать</button>
+          <button className={`profile__edit-button ${(checkInvalidity() || props.onRequest) && 'profile__edit-button_disabled'}`}>Редактировать</button>
         </form>
         <button className='profile__logout-button' onClick={handleLogout}>Выйти из аккаунта</button>
       </main>

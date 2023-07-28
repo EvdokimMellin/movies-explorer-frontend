@@ -10,8 +10,11 @@ function SearchForm(props) {
 
   useEffect(() => {
     searchInput.current.setAttribute('value', props.searchData);
-    // props.page !== 'saved-movies' ? console.log(props.searchData) : console.log('object');
   }, [props.searchData])
+
+  useEffect(() => {
+    props.isLoading ? searchInput.current.setAttribute('readonly', 'readonly') : searchInput.current.removeAttribute('readonly');
+  }, [props.isLoading])
 
   function searchSwitch(e) {
     props.checkboxClickHandler(!props.onlyShortMovies);
@@ -28,7 +31,7 @@ function SearchForm(props) {
     if (searchInput.current.value === '') {
       setInputError(true)
     } else {
-      props.searchHandler(inputValue);
+      !props.isLoading && props.searchHandler(inputValue);
     }
   }
 

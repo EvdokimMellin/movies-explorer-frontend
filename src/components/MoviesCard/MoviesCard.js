@@ -1,19 +1,14 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 function MoviesCard(props) {
-  // const isLiked = props.moviesList.some(movie => movie.movieId === props.movieData.id);
-  let isLiked = false;
+  const isLiked = props.moviesList.some(movie => movie.movieId === props.movieData.id);
 
-  // useEffect(() => {
-  //   (props.moviesList.some(movie => movie.movieId === props.movieData.id) !== isLiked) && (isLiked = !isLiked)
-  // }, [props.moviesList])
-
-  function handleLike(evt) {
+  function handleLike() {
     if(isLiked) {
       let id
-      // props.movieData.savedId
-      //   ? id = props.movieData.savedId
-      //   : id = props.moviesList.find(movie => movie.movieId === props.movieData.id)._id;
+      props.movieData.savedId
+        ? id = props.movieData.savedId
+        : id = props.moviesList.find(movie => movie.movieId === props.movieData.id)._id;
       props.deleteHandler(id)
     } else {
       console.log(props.movieData);

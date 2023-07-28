@@ -1,19 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
-import NavTab from '../NavTab/NavTab';
-import Promo from '../Promo/Promo';
-import AboutProject from '../AboutProject/AboutProject';
-import Techs from '../Techs/Techs';
-import AboutMe from '../AboutMe/AboutMe';
-import Portfolio from '../Portfolio/Portfolio';
-import Footer from '../Footer/Footer';
-import GlobalNav from '../GlobalNav/GlobalNav';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Main from '../Main/Main';
+import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
+import ProfilePage from '../ProfilePage/ProfilePage';
 import User from '../User/User';
-import Profile from '../Profile/Profile';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import PopupError from '../PopupError/PopupError';
 import { mainApi } from '../../utils/MainApi';
 import { moviesApi } from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
@@ -40,30 +34,28 @@ function App() {
   const [notFound, setNotFound] = useState(false);
   const [notFoundSaved, setNotFoundSaved] = useState(false);
   const [isPopupOpened, setIsPopupOpened] = useState(false);
+  const [onRequest, setOnRequest] = useState(false);
+  const [serverError, setServerError] = useState('');
 
   useEffect(() => {
     if (onlyShortMovies) {
       setCards(shortMoviesFilter(movieFilter(movies, searchData)));
-      // setSavedCards(shortMoviesFilter(movieFilter(savedMovies, searchData)));
       shortMoviesFilter(movieFilter(movies, searchData)).length !== 0 ? setNotFound(false) : setNotFound(true);
-      // shortMoviesFilter(movieFilter(savedMovies, searchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
     } else {
       setCards(movieFilter(movies, searchData));
-      // setSavedCards(movieFilter(savedMovies, searchData));
       movieFilter(movies, searchData).length !== 0 ? setNotFound(false) : setNotFound(true);
-      // movieFilter(savedMovies, searchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
     }
   }, [searchData, onlyShortMovies, movies]);
 
-  // useEffect(() => {
-  //   if (onlyShortSavedMovies) {
-  //     setSavedCards(shortMoviesFilter(movieFilter(savedMovies, savedSearchData)));
-  //     shortMoviesFilter(movieFilter(savedMovies, savedSearchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
-  //   } else {
-  //     setSavedCards(movieFilter(savedMovies, savedSearchData));
-  //     movieFilter(savedMovies, savedSearchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
-  //   }
-  // }, [savedSearchData, onlyShortSavedMovies, savedMovies])
+  useEffect(() => {
+    if (onlyShortSavedMovies) {
+      setSavedCards(shortMoviesFilter(movieFilter(savedMovies, savedSearchData)));
+      shortMoviesFilter(movieFilter(savedMovies, savedSearchData)).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+    } else {
+      setSavedCards(movieFilter(savedMovies, savedSearchData));
+      movieFilter(savedMovies, savedSearchData).length !== 0 ? setNotFoundSaved(false) : setNotFoundSaved(true);
+    }
+  }, [savedSearchData, onlyShortSavedMovies, savedMovies])
 
   useEffect (() => {
     mainApi.getSavedMovies()
@@ -72,7 +64,10 @@ function App() {
         setLoginState(true);
       })
       .finally(() => {setIsTokenChecked(true)})
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        err !== 'Ошибка: 401' && setServerError(err);
+        console.log(err);
+      });
   }, [loginState])
 
   useEffect(() => {
@@ -87,54 +82,11 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        err !== 'Ошибка: 401' && setServerError(err);
+        console.log(err);
+      })
   }, [loginState])
-
-
-  function Main () {
-    return (<>
-      {loginState ? <GlobalNav page="main" /> : <NavTab />}
-      <Promo />
-      <main>
-        <AboutProject />
-        <Techs />
-        <AboutMe />
-        <Portfolio />
-      </main>
-      <Footer />
-    </>);
-  }
-
-  function Movies() {
-    return (<main>
-      <GlobalNav page="movies" />
-      <SearchForm searchHandler={handleSearch} checkboxClickHandler={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} page='movies' />
-      <MoviesCardList page="movies" cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
-       moviesList={movies}
-      //  moviesList={savedMovies}
-       isLoading={isLoading} notFound={notFound} movies={movies} />
-      <Footer />
-    </main>);
-  }
-
-  function SavedMovies() {
-    return (<main>
-      <GlobalNav page="saved-movies" />
-      <SearchForm searchHandler={handleSearchSaved} checkboxClickHandler={setOnlyShortSavedMovies} searchData={savedSearchData} onlyShortMovies={onlyShortSavedMovies} page='saved-movies' />
-      <MoviesCardList page="saved-movies" cards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie}
-      moviesList={movies}
-      // moviesList={savedMovies}
-      isLoading={isLoading} notFound={notFoundSaved} />
-      <Footer />
-    </main>);
-  }
-
-  function ProfilePage() {
-    return (<>
-      <GlobalNav />
-      <Profile setLoginState={setLoginState} logoutHandler={handleLogout} editProfileHandler={handleEditProfile} setConflictError={setConflictError} conflictError={conflictError} isPopupOpened={isPopupOpened} setIsPopupOpened={setIsPopupOpened} />
-    </>);
-  }
 
   function handleSearch(inputValue) {
     setSearchData(inputValue);
@@ -145,19 +97,19 @@ function App() {
       moviesApi.getMovies()
         .then((res) => {
           res.forEach(movie => {
-            // savedMovies.forEach(sMovie => {
-            //   if (sMovie.movieId === movie.id) {
-            //     movie.isSaved = true;
-            //     movie.savedId = sMovie._id;
-            //   }
-            // })
+            savedMovies.forEach(sMovie => {
+              if (sMovie.movieId === movie.id) {
+                movie.isSaved = true;
+                movie.savedId = sMovie._id;
+              }
+            })
           });
           setMovies(res);
         })
         .finally(() => {setIsLoading(false)})
         .catch((err) => {
+          setServerError(err);
           console.log(err);
-          setIsLoading(false);
         });
     }
   }
@@ -167,21 +119,26 @@ function App() {
   }
 
   function handleRegister({email, password, name}) {
+    setOnRequest(true)
     mainApi.register({email, password, name})
       .then(res => {
         console.log(res);
         setConflictError(false);
       })
       .then(() => handleLogin({email, password}))
+      .finally(() => {setOnRequest(false)})
       .catch(err => {
         console.log(err)
         if (err === 'Ошибка: 409') {
           setConflictError(true);
+        } else {
+          setServerError(err)
         }
       });
   }
 
   function handleLogin({email, password}) {
+    setOnRequest(true)
     mainApi.login({email, password})
       .then(res => {
         console.log(res);
@@ -189,9 +146,12 @@ function App() {
         setUnauthorizedError(false);
         history.push('/movies');
       })
+      .finally(() => {setOnRequest(false)})
       .catch(err => {
         if (err === 'Ошибка: 401') {
           setUnauthorizedError(true);
+        } else {
+          setServerError(err);
         }
         console.log(err);
       });
@@ -208,10 +168,14 @@ function App() {
         setMovies([]);
         history.push('/');
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        setServerError(err);
+        console.log(err);
+      });
   }
 
   function handleEditProfile(name, email) {
+    setOnRequest(true);
     mainApi.editProfile(name, email)
       .then(res => {
         console.log(res);
@@ -219,10 +183,13 @@ function App() {
         setConflictError(false);
         setIsPopupOpened(true);
       })
+      .finally(() => {setOnRequest(false)})
       .catch(err => {
         console.log(err)
         if (err === 'Ошибка: 409') {
           setConflictError(true);
+        } else {
+          setServerError(err)
         }
       });
   }
@@ -233,18 +200,24 @@ function App() {
         setSavedMovies([res, ...savedMovies]);
         console.log(res);
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        setServerError(err);
+        console.log(err);
+      });
   }
 
   function handleDeleteMovie(movieId) {
-    // mainApi.deleteMovie(movieId)
-    //   .then(res => {
-    //     setSavedMovies(savedMovies.filter((savedMovie) => {
-    //       return(savedMovie._id !== movieId);
-    //     }))
-    //     console.log(res);
-    //   })
-    //   .catch(err => console.log(err));
+    mainApi.deleteMovie(movieId)
+      .then(res => {
+        setSavedMovies(savedMovies.filter((savedMovie) => {
+          return(savedMovie._id !== movieId);
+        }))
+        console.log(res);
+      })
+      .catch((err) => {
+        setServerError(err);
+        console.log(err);
+      });
   }
 
   if(!isTokenChecked) {
@@ -254,19 +227,26 @@ function App() {
   return (
     <div className="app">
       <CurrentUserContext.Provider value={currentUser}>
+        <PopupError serverError={serverError} setServerError={setServerError} />
+
         <Switch>
+
           <Route exact path="/">
-            <Main />
+            <Main loginState={loginState} />
           </Route>
-          <ProtectedRoute path="/movies" loginState={loginState} component={Movies} />
-          <ProtectedRoute path="/saved-movies" loginState={loginState} component={SavedMovies} />
-          <ProtectedRoute path="/profile" loginState={loginState} component={ProfilePage} />
+
+          <ProtectedRoute path="/movies" loginState={loginState} component={Movies} handleSearch={handleSearch} setOnlyShortMovies={setOnlyShortMovies} onlyShortMovies={onlyShortMovies} searchData={searchData} cards={cards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFound={notFound} movies={movies} />
+
+          <ProtectedRoute path="/saved-movies" loginState={loginState} component={SavedMovies} handleSearchSaved={handleSearchSaved} setOnlyShortSavedMovies={setOnlyShortSavedMovies} savedSearchData={savedSearchData} onlyShortSavedMovies={onlyShortSavedMovies} savedCards={savedCards} handleSaveMovie={handleSaveMovie} handleDeleteMovie={handleDeleteMovie} savedMovies={savedMovies} isLoading={isLoading} notFoundSaved={notFoundSaved} movies={movies}/>
+
+          <ProtectedRoute path="/profile" loginState={loginState} component={ProfilePage} setLoginState={setLoginState} handleLogout={handleLogout} handleEditProfile={handleEditProfile} setConflictError={setConflictError} conflictError={conflictError} isPopupOpened={isPopupOpened} setIsPopupOpened={setIsPopupOpened} onRequest={onRequest} />
+
           <Route path="/signup">
-            <User page='register' submitHandler={handleRegister} setConflictError={setConflictError} conflictError={conflictError} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} />
+            <User page='register' submitHandler={handleRegister} setConflictError={setConflictError} conflictError={conflictError} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} onRequest={onRequest} />
             {loginState && <Redirect to="/" />}
           </Route>
           <Route path="/signin">
-            <User page='login' submitHandler={handleLogin} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} setConflictError={setConflictError} conflictError={conflictError} />
+            <User page='login' submitHandler={handleLogin} setUnauthorizedError={setUnauthorizedError} unauthorizedError={unauthorizedError} setConflictError={setConflictError} conflictError={conflictError} onRequest={onRequest} />
             {loginState && <Redirect to="/" />}
           </Route>
           <Route path="/*">

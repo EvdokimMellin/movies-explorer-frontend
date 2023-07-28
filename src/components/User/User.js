@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import logo from '../../images/logo.svg';
 import { useHistory } from 'react-router-dom';
 
@@ -11,6 +11,9 @@ function User(props) {
   const [emailError, setEmailError] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const nameInput = useRef();
+  const emailInput = useRef();
+  const passwordInput = useRef();
   const regName = /^[a-zа-яА-ЯЁё +-]+$/gi;
   const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
@@ -23,6 +26,18 @@ function User(props) {
     setNameError('');
     setPasswordError('');
   }, [props.page]);
+
+  useEffect(() => {
+    if(props.onRequest) {
+      nameInput.current && nameInput.current.setAttribute('readonly', 'readonly');
+      emailInput.current.setAttribute('readonly', 'readonly');
+      passwordInput.current.setAttribute('readonly', 'readonly');
+    } else {
+      nameInput.current && nameInput.current.removeAttribute('readonly');
+      emailInput.current.removeAttribute('readonly');
+      passwordInput.current.removeAttribute('readonly');
+    }
+  }, [props.onRequest])
 
   useEffect(() => {
     if (props.conflictError) {
@@ -86,7 +101,7 @@ function User(props) {
     }
   }
 
-  function checkInvalidity () {
+  function checkInvalidity() {
     if(props.page === 'register') {
       if (nameError || emailError || passwordError || !nameValue || !emailValue || !passwordValue) {
         return true;
@@ -124,29 +139,29 @@ function User(props) {
         {props.page === 'register' &&
           <>
             <label htmlFor='user-form__input-name' className='user-form__label'>Имя</label>
-            <input type='name' id='user-form__input-name' name='name' className={`user-form__input ${nameError && 'user-form__input-error'}`} required onChange={handleInput} minLength='2' maxLength='30'></input>
+            <input ref={nameInput} type='name' id='user-form__input-name' name='name' className={`user-form__input ${nameError && 'user-form__input-error'}`} required onChange={handleInput} minLength='2' maxLength='30'></input>
             <div className='user-form__error-container'>
               <span className='user-form__error-message'>{nameError}</span>
             </div>
           </>
         }
         <label htmlFor='user-form__input-email' className='user-form__label'>E-mail</label>
-        <input type='email' id='user-form__input-email' name='email' className={`user-form__input ${emailError && 'user-form__input-error'}`} required onChange={handleInput}></input>
+        <input ref={emailInput} type='email' id='user-form__input-email' name='email' className={`user-form__input ${emailError && 'user-form__input-error'}`} required onChange={handleInput}></input>
         <div className='user-form__error-container'>
           <span className='user-form__error-message'>{emailError}</span>
         </div>
         <label htmlFor='user-form__input-password' className='user-form__label'>Пароль</label>
-        <input type='password' id='user-form__input-password' autoComplete='on' name='password' className={`user-form__input ${passwordError && 'user-form__input-error'}`} required onChange={handleInput} minLength='5' maxLength='30'></input>
+        <input ref={passwordInput} type='password' id='user-form__input-password' autoComplete='on' name='password' className={`user-form__input ${passwordError && 'user-form__input-error'}`} required onChange={handleInput} minLength='5' maxLength='30'></input>
         <div className='user-form__error-container'>
           <span className='user-form__error-message'>{passwordError}</span>
         </div>
         {props.page === 'register'
           ? <>
-              <button type='submit' className={`user-form__submit-button ${checkInvalidity() && 'user-form__submit-button_disabled'}`}>Зарегистрироваться</button>
+              <button type='submit' className={`user-form__submit-button ${(checkInvalidity() || props.onRequest) && 'user-form__submit-button_disabled'}`}>Зарегистрироваться</button>
               <p className='user-form__link-text'>Уже зарегистрированы? <Link to='/signin' className='user-form__link'>Войти</Link></p>
             </>
           : <>
-              <button type='submit' className={`user-form__submit-button ${checkInvalidity() && 'user-form__submit-button_disabled'} ${props.page === 'login' && 'login-button'}`}>Войти</button>
+              <button type='submit' className={`user-form__submit-button ${(checkInvalidity() || props.onRequest) && 'user-form__submit-button_disabled'} ${props.page === 'login' && 'login-button'}`}>Войти</button>
               <p className='user-form__link-text'>Ещё не зарегистрированы? <Link to='/signup' className='user-form__link'>Регистрация</Link></p>
             </>
         }
