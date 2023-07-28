@@ -7,14 +7,11 @@ function MoviesCard(props) {
     if(!props.onRequest) {
       if(isLiked) {
         let id
-        console.log(props.movieData.savedId);
-        console.log(props.moviesList.find(movie => movie.movieId === props.movieData.id)._id);
         props.moviesList.find(movie => movie.movieId === props.movieData.id)._id
           ? id = props.moviesList.find(movie => movie.movieId === props.movieData.id)._id
           : id = props.movieData.savedId;
         props.deleteHandler(id)
       } else {
-        console.log(props.movieData);
         props.likeHandler(props.movieData);
       }
     }
