@@ -276,27 +276,22 @@ function App() {
       });
   }
 
+  let savedIdes = []
 
-  const [a, setA] = useState([{key: 1, value: 1}, {key: 2, value:2}]);
-
-  function handleSaveMovie(movie, setIsLiked) {
-    setA(prev => prev.map((a) => {
-      a.value += 1;
-      return a;
-    }))
-    // mainApi.saveMovie(movie)
-    //   .then(res => {
-    //     console.log(moviesForDelete);
-    //     console.log(addedMovies);
-    //     addedMovies = [res, ...addedMovies]
-    //     setIsLiked(true);
-    //     console.log(res);
-    //     // setSavedId(res._id);
-    //     console.log(res._id);
-    //     // savedIdes = [res._id, ...savedIdes]
-    //     // setSavedMovies([res, ...savedMovies]);
-    //   })
-    //   .catch(err => console.log(err));
+  function handleSaveMovie(movie, setIsLiked, setSavedId) {
+    mainApi.saveMovie(movie)
+      .then(res => {
+        console.log(moviesForDelete);
+        console.log(addedMovies);
+        addedMovies = [res, ...addedMovies]
+        setIsLiked(true);
+        console.log(res);
+        setSavedId(res._id);
+        console.log(res._id);
+        savedIdes = [res._id, ...savedIdes]
+        // setSavedMovies([res, ...savedMovies]);
+      })
+      .catch(err => console.log(err));
   }
 
   function handleDeleteMovie(movieId, secondArg) {

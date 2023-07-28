@@ -2,12 +2,12 @@ import React, {useEffect, useState, useRef} from "react";
 
 function MoviesCard(props) {
   const isLiiked = props.moviesList.some(movie => movie.movieId === props.movieData.id);
-  const [isLiked, setIsLiked] = useState(props.moviesList.concat(props.addedMovies).some(movie => movie.movieId === props.movieData.id));
+  const [isLiked, setIsLiked] = useState(props.moviesList.some(movie => movie.movieId === props.movieData.id));
   const [savedId, setSavedId] = useState('');
   const cardElement = useRef();
 
   useEffect(() => {
-    // console.log(savedId);
+    console.log(savedId);
   }, [savedId])
 
   // useEffect(() => {
@@ -49,7 +49,7 @@ function MoviesCard(props) {
       : id = (props.moviesList.find(movie => movie.movieId === props.movieData.id)._id) || props.movieData.savedId;
       props.deleteHandler(id, setIsLiked);
     } else {
-      props.likeHandler(props.movieData, setIsLiked);
+      props.likeHandler(props.movieData, setIsLiked, setSavedId, cardElement);
     }
     // setIsLiked(!isLiked);
     // handleForceUpdate();

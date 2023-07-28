@@ -30,7 +30,8 @@ function MoviesCardList(props) {
   useEffect(() => {
     if (pageWidth < desktopResolution && pageWidth >= tabletResolution) {
       setCardsLock(tabletCardsLock);
-    } else if (pageWidth < tabletResolution) {      setCardsLock(phoneCardsLock)
+    } else if (pageWidth < tabletResolution) {
+      setCardsLock(phoneCardsLock)
     } else {
       setCardsLock(desktopCardsLock)
     }
@@ -60,7 +61,7 @@ function MoviesCardList(props) {
       <ul className="movies-cards__list">
         {
           allCards.slice(0, cardsLock).map(cardElement => {
-            return(<MoviesCard key={cardElement.id || cardElement.movieId} page={props.page} movieData={cardElement} title={cardElement.nameRU} duration={`${(cardElement.duration/60 >= 1) ? `${Math.floor(cardElement.duration/60)}ч` : ''} ${cardElement.duration%60}м`} image={cardElement.image.url ? `https://api.nomoreparties.co${cardElement.image.url}` : cardElement.image} likeHandler={props.handleSaveMovie} deleteHandler={props.handleDeleteMovie} moviesList={allMoviesList} addedMovies={props.addedMovies} />)
+            return(<MoviesCard key={cardElement.id || cardElement.movieId} page={props.page} movieData={cardElement} title={cardElement.nameRU} duration={`${(cardElement.duration/60 >= 1) ? `${Math.floor(cardElement.duration/60)}ч` : ''} ${cardElement.duration%60}м`} image={cardElement.image.url ? `https://api.nomoreparties.co${cardElement.image.url}` : cardElement.image} likeHandler={props.handleSaveMovie} deleteHandler={props.handleDeleteMovie} moviesList={allMoviesList} />)
           })
         }
       </ul>
